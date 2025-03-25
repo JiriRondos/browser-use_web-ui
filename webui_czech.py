@@ -818,13 +818,24 @@ def main():
                                     "custom": []
                                 }
                                 choices = model_choices.get(provider, [])
-                                return gr.Dropdown.update(choices=choices, value=choices[0] if choices else "")
+                                return gr.update(choices=choices, value=choices[0] if choices else "")
+
+                            # Funkce pro aktualizaci viditelnosti posuvníku délky kontextu
+                            def update_llm_num_ctx_visibility(provider):
+                                return gr.update(visible=provider == "ollama")
 
                             # Update model dropdown when provider changes
                             llm_provider.change(
                                 fn=update_models_list,
                                 inputs=llm_provider,
                                 outputs=llm_model_name,
+                            )
+
+                            # Update context length visibility when provider changes
+                            llm_provider.change(
+                                fn=update_llm_num_ctx_visibility,
+                                inputs=llm_provider,
+                                outputs=llm_num_ctx,
                             )
 
                     with gr.TabItem(i18n("tabs.browser_settings"), id=3):
