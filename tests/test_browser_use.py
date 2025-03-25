@@ -108,7 +108,7 @@ async def test_browser_use_custom():
     from src.browser.custom_context import BrowserContextConfig
     from src.controller.custom_controller import CustomController
 
-    window_w, window_h = 1280, 1100
+    window_w, window_h = 1280, 800
 
     # llm = utils.get_llm_model(
     #     provider="openai",
