@@ -177,7 +177,7 @@ async def run_browser_agent(
             base_url=llm_base_url,
             api_key=llm_api_key,
         )
-        if agent_type == "org":
+        if agent_type == "přednastavený":
             final_result, errors, model_actions, model_thoughts, trace_file, history_file = await run_org_agent(
                 llm=llm,
                 use_own_browser=use_own_browser,
@@ -197,7 +197,7 @@ async def run_browser_agent(
                 chrome_cdp=chrome_cdp,
                 max_input_tokens=max_input_tokens
             )
-        elif agent_type == "custom":
+        elif agent_type == "vlastní":
             final_result, errors, model_actions, model_thoughts, trace_file, history_file = await run_custom_agent(
                 llm=llm,
                 use_own_browser=use_own_browser,
@@ -539,7 +539,7 @@ async def run_with_stream(
             max_input_tokens=max_input_tokens
         )
         # Add HTML content at the start of the result array
-        html_content = f"<h1 style='width:{stream_vw}vw; height:{stream_vh}vh'>Using browser...</h1>"
+        html_content = f"<h1 style='width:{stream_vw}vw; height:{stream_vh}vh'>Prohlížeč běží...</h1>"
         yield [html_content] + list(result)
     else:
         try:
@@ -575,7 +575,7 @@ async def run_with_stream(
             )
 
             # Initialize values for streaming
-            html_content = f"<h1 style='width:{stream_vw}vw; height:{stream_vh}vh'>Using browser...</h1>"
+            html_content = f"<h1 style='width:{stream_vw}vw; height:{stream_vh}vh'>Prohlížeč běží...</h1>"
             final_result = errors = model_actions = model_thoughts = ""
             recording_gif = trace = history_file = None
 
@@ -749,10 +749,10 @@ def create_ui(config, theme_name="Ocean"):
             with gr.TabItem("⚙️ Nastavení Agenta", id=1):
                 with gr.Group():
                     agent_type = gr.Radio(
-                        ["org", "custom"],
+                        ["přednastavený", "vlastní"],
                         label="Typ Agenta",
                         value=config['agent_type'],
-                        info="Vyberte typ agenta, který chcete použít (org = originální, custom = vlastní)"
+                        info="Vyberte typ agenta, který chcete použít (přednastavený, vlastní)"
                     )
                     with gr.Column():
                         max_steps = gr.Slider(
