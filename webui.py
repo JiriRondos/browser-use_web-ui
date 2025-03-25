@@ -219,7 +219,7 @@ async def run_browser_agent(
                 max_input_tokens=max_input_tokens
             )
         else:
-            raise ValueError(f"Invalid agent type: {agent_type}")
+            raise ValueError(f"Neplatný typ agenta: {agent_type}")
 
         # Get the list of videos after the agent runs (if recording is enabled)
         # latest_video = None
@@ -752,7 +752,7 @@ def create_ui(config, theme_name="Ocean"):
                         ["org", "custom"],
                         label="Typ Agenta",
                         value=config['agent_type'],
-                        info="Vyberte typ agenta, který chcete použít",
+                        info="Vyberte typ agenta, který chcete použít (org = originální, custom = vlastní)"
                     )
                     with gr.Column():
                         max_steps = gr.Slider(
