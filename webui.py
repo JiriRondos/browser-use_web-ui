@@ -734,13 +734,12 @@ def create_ui(config, theme_name="Ocean"):
     """
 
     with gr.Blocks(
-            title="Webové Rozhraní Prohlížeče", theme=theme_map[theme_name], css=css
+            title="Shaman", theme=theme_map[theme_name], css=css
     ) as demo:
         with gr.Row():
             gr.Markdown(
                 """
-                # 🌐 Webové Rozhraní Prohlížeče
-                ### Ovládejte svůj prohlížeč s pomocí umělé inteligence
+                # 🌐 Shaman - testovací prohlížeč s AI
                 """,
                 elem_classes=["header-text"],
             )
