@@ -79,19 +79,19 @@ async def stop_agent():
             # Request stop
             _global_agent.stop()
         # Update UI immediately
-        message = "Stop requested - the agent will halt at the next safe point"
+        message = "Zastavení vyžádáno - agent se zastaví na dalším bezpečném bodě"
         logger.info(f"🛑 {message}")
 
         # Return UI updates
         return (
-            gr.update(value="Stopping...", interactive=False),  # stop_button
+            gr.update(value="Zastavuji...", interactive=False),  # stop_button
             gr.update(interactive=False),  # run_button
         )
     except Exception as e:
-        error_msg = f"Error during stop: {str(e)}"
+        error_msg = f"Chyba během zastavování: {str(e)}"
         logger.error(error_msg)
         return (
-            gr.update(value="Stop", interactive=True),
+            gr.update(value="Zastavit", interactive=True),
             gr.update(interactive=True)
         )
 
@@ -105,19 +105,19 @@ async def stop_research_agent():
         _global_agent_state.request_stop()
 
         # Update UI immediately
-        message = "Stop requested - the agent will halt at the next safe point"
+        message = "Zastavení vyžádáno - agent se zastaví na dalším bezpečném bodě"
         logger.info(f"🛑 {message}")
 
         # Return UI updates
         return (  # errors_output
-            gr.update(value="Stopping...", interactive=False),  # stop_button
+            gr.update(value="Zastavuji...", interactive=False),  # stop_button
             gr.update(interactive=False),  # run_button
         )
     except Exception as e:
-        error_msg = f"Error during stop: {str(e)}"
+        error_msg = f"Chyba během zastavování: {str(e)}"
         logger.error(error_msg)
         return (
-            gr.update(value="Stop", interactive=True),
+            gr.update(value="Zastavit", interactive=True),
             gr.update(interactive=True)
         )
 
@@ -219,7 +219,7 @@ async def run_browser_agent(
                 max_input_tokens=max_input_tokens
             )
         else:
-            raise ValueError(f"Invalid agent type: {agent_type}")
+            raise ValueError(f"Neplatný typ agenta: {agent_type}")
 
         # Get the list of videos after the agent runs (if recording is enabled)
         # latest_video = None
@@ -241,7 +241,7 @@ async def run_browser_agent(
             gif_path,
             trace_file,
             history_file,
-            gr.update(value="Stop", interactive=True),  # Re-enable stop button
+            gr.update(value="Zastavit", interactive=True),  # Re-enable stop button
             gr.update(interactive=True)  # Re-enable run button
         )
 
@@ -260,7 +260,7 @@ async def run_browser_agent(
             None,  # latest_video
             None,  # history_file
             None,  # trace_file
-            gr.update(value="Stop", interactive=True),  # Re-enable stop button
+            gr.update(value="Zastavit", interactive=True),  # Re-enable stop button
             gr.update(interactive=True)  # Re-enable run button
         )
 
@@ -586,9 +586,9 @@ async def run_with_stream(
                     if encoded_screenshot is not None:
                         html_content = f'<img src="data:image/jpeg;base64,{encoded_screenshot}" style="width:{stream_vw}vw; height:{stream_vh}vh ; border:1px solid #ccc;">'
                     else:
-                        html_content = f"<h1 style='width:{stream_vw}vw; height:{stream_vh}vh'>Waiting for browser session...</h1>"
+                        html_content = f"<h1 style='width:{stream_vw}vw; height:{stream_vh}vh'>Čekání na relaci prohlížeče...</h1>"
                 except Exception as e:
-                    html_content = f"<h1 style='width:{stream_vw}vw; height:{stream_vh}vh'>Waiting for browser session...</h1>"
+                    html_content = f"<h1 style='width:{stream_vw}vw; height:{stream_vh}vh'>Čekání na relaci prohlížeče...</h1>"
 
                 if _global_agent and _global_agent.state.stopped:
                     yield [
@@ -600,7 +600,7 @@ async def run_with_stream(
                         recording_gif,
                         trace,
                         history_file,
-                        gr.update(value="Stopping...", interactive=False),  # stop_button
+                        gr.update(value="Zastavuji...", interactive=False),  # stop_button
                         gr.update(interactive=False),  # run_button
                     ]
                     break
@@ -648,15 +648,15 @@ async def run_with_stream(
         except Exception as e:
             import traceback
             yield [
-                f"<h1 style='width:{stream_vw}vw; height:{stream_vh}vh'>Waiting for browser session...</h1>",
+                f"<h1 style='width:{stream_vw}vw; height:{stream_vh}vh'>Čekání na relaci prohlížeče...</h1>",
                 "",
-                f"Error: {str(e)}\n{traceback.format_exc()}",
+                f"Chyba: {str(e)}\n{traceback.format_exc()}",
                 "",
                 "",
                 None,
                 None,
                 None,
-                gr.update(value="Stop", interactive=True),  # Re-enable stop button
+                gr.update(value="Zastavit", interactive=True),  # Re-enable stop button
                 gr.update(interactive=True)  # Re-enable run button
             ]
 
@@ -712,7 +712,7 @@ async def run_deep_search(research_task, max_search_iteration_input, max_query_p
                                                       chrome_cdp=chrome_cdp
                                                       )
 
-    return markdown_content, file_path, gr.update(value="Stop", interactive=True), gr.update(interactive=True)
+    return markdown_content, file_path, gr.update(value="Zastavit", interactive=True), gr.update(interactive=True)
 
 
 def create_ui(config, theme_name="Ocean"):
@@ -734,25 +734,25 @@ def create_ui(config, theme_name="Ocean"):
     """
 
     with gr.Blocks(
-            title="Browser Use WebUI", theme=theme_map[theme_name], css=css
+            title="Webové Rozhraní Prohlížeče", theme=theme_map[theme_name], css=css
     ) as demo:
         with gr.Row():
             gr.Markdown(
                 """
-                # 🌐 Browser Use WebUI
-                ### Control your browser with AI assistance
+                # 🌐 Webové Rozhraní Prohlížeče
+                ### Ovládejte svůj prohlížeč s pomocí umělé inteligence
                 """,
                 elem_classes=["header-text"],
             )
 
         with gr.Tabs() as tabs:
-            with gr.TabItem("⚙️ Agent Settings", id=1):
+            with gr.TabItem("⚙️ Nastavení Agenta", id=1):
                 with gr.Group():
                     agent_type = gr.Radio(
                         ["org", "custom"],
-                        label="Agent Type",
+                        label="Typ Agenta",
                         value=config['agent_type'],
-                        info="Select the type of agent to use",
+                        info="Vyberte typ agenta, který chcete použít (org = originální, custom = vlastní)"
                     )
                     with gr.Column():
                         max_steps = gr.Slider(
@@ -760,62 +760,62 @@ def create_ui(config, theme_name="Ocean"):
                             maximum=200,
                             value=config['max_steps'],
                             step=1,
-                            label="Max Run Steps",
-                            info="Maximum number of steps the agent will take",
+                            label="Maximální počet kroků",
+                            info="Maximální počet kroků, které agent provede",
                         )
                         max_actions_per_step = gr.Slider(
                             minimum=1,
                             maximum=20,
                             value=config['max_actions_per_step'],
                             step=1,
-                            label="Max Actions per Step",
-                            info="Maximum number of actions the agent will take per step",
+                            label="Maximální počet akcí na krok",
+                            info="Maximální počet akcí, které agent provede v jednom kroku",
                         )
                     with gr.Column():
                         use_vision = gr.Checkbox(
-                            label="Use Vision",
+                            label="Použít vidění",
                             value=config['use_vision'],
-                            info="Enable visual processing capabilities",
+                            info="Povolit schopnosti vizuálního zpracování",
                         )
                         max_input_tokens = gr.Number(
-                            label="Max Input Tokens",
+                            label="Maximální počet vstupních tokenů",
                             value=128000,
                             precision=0
 
                         )
                         tool_calling_method = gr.Dropdown(
-                            label="Tool Calling Method",
+                            label="Metoda volání nástrojů",
                             value=config['tool_calling_method'],
                             interactive=True,
                             allow_custom_value=True,  # Allow users to input custom model names
                             choices=["auto", "json_schema", "function_calling"],
-                            info="Tool Calls Funtion Name",
+                            info="Název funkce volání nástrojů",
                             visible=False
                         )
 
-            with gr.TabItem("🔧 LLM Settings", id=2):
+            with gr.TabItem("🔧 Nastavení LLM", id=2):
                 with gr.Group():
                     llm_provider = gr.Dropdown(
                         choices=[provider for provider, model in utils.model_names.items()],
-                        label="LLM Provider",
+                        label="Poskytovatel LLM",
                         value=config['llm_provider'],
-                        info="Select your preferred language model provider"
+                        info="Vyberte preferovaného poskytovatele jazykového modelu"
                     )
                     llm_model_name = gr.Dropdown(
-                        label="Model Name",
+                        label="Název modelu",
                         choices=utils.model_names['openai'],
                         value=config['llm_model_name'],
                         interactive=True,
                         allow_custom_value=True,  # Allow users to input custom model names
-                        info="Select a model in the dropdown options or directly type a custom model name"
+                        info="Vyberte model z rozbalovací nabídky nebo přímo zadejte vlastní název modelu"
                     )
                     llm_num_ctx = gr.Slider(
                         minimum=2 ** 8,
                         maximum=2 ** 16,
                         value=config['llm_num_ctx'],
                         step=1,
-                        label="Max Context Length",
-                        info="Controls max context length model needs to handle (less = faster)",
+                        label="Maximální délka kontextu",
+                        info="Určuje maximální délku kontextu, kterou model potřebuje zpracovat (méně = rychlejší)",
                         visible=config['llm_provider'] == "ollama"
                     )
                     llm_temperature = gr.Slider(
@@ -823,20 +823,20 @@ def create_ui(config, theme_name="Ocean"):
                         maximum=2.0,
                         value=config['llm_temperature'],
                         step=0.1,
-                        label="Temperature",
-                        info="Controls randomness in model outputs"
+                        label="Teplota",
+                        info="Ovládá náhodnost ve výstupech modelu"
                     )
                     with gr.Row():
                         llm_base_url = gr.Textbox(
-                            label="Base URL",
+                            label="Základní URL",
                             value=config['llm_base_url'],
-                            info="API endpoint URL (if required)"
+                            info="URL koncového bodu API (pokud je vyžadováno)"
                         )
                         llm_api_key = gr.Textbox(
-                            label="API Key",
+                            label="API klíč",
                             type="password",
                             value=config['llm_api_key'],
-                            info="Your API key (leave blank to use .env)"
+                            info="Váš API klíč (ponechte prázdné pro použití .env)"
                         )
 
             # Change event to update context length slider
@@ -850,140 +850,140 @@ def create_ui(config, theme_name="Ocean"):
                 outputs=llm_num_ctx
             )
 
-            with gr.TabItem("🌐 Browser Settings", id=3):
+            with gr.TabItem("🌐 Nastavení prohlížeče", id=3):
                 with gr.Group():
                     with gr.Row():
                         use_own_browser = gr.Checkbox(
-                            label="Use Own Browser",
+                            label="Použít vlastní prohlížeč",
                             value=config['use_own_browser'],
-                            info="Use your existing browser instance",
+                            info="Použít existující instanci prohlížeče",
                         )
                         keep_browser_open = gr.Checkbox(
-                            label="Keep Browser Open",
+                            label="Nechat prohlížeč otevřený",
                             value=config['keep_browser_open'],
-                            info="Keep Browser Open between Tasks",
+                            info="Nechat prohlížeč otevřený mezi úkoly",
                         )
                         headless = gr.Checkbox(
-                            label="Headless Mode",
+                            label="Režim bez GUI",
                             value=config['headless'],
-                            info="Run browser without GUI",
+                            info="Spustit prohlížeč bez grafického rozhraní",
                         )
                         disable_security = gr.Checkbox(
-                            label="Disable Security",
+                            label="Vypnout zabezpečení",
                             value=config['disable_security'],
-                            info="Disable browser security features",
+                            info="Vypnout bezpečnostní funkce prohlížeče",
                         )
                         enable_recording = gr.Checkbox(
-                            label="Enable Recording",
+                            label="Povolit nahrávání",
                             value=config['enable_recording'],
-                            info="Enable saving browser recordings",
+                            info="Povolit ukládání nahrávek prohlížeče",
                         )
 
                     with gr.Row():
                         window_w = gr.Number(
-                            label="Window Width",
+                            label="Šířka okna",
                             value=config['window_w'],
-                            info="Browser window width",
+                            info="Šířka okna prohlížeče",
                         )
                         window_h = gr.Number(
-                            label="Window Height",
+                            label="Výška okna",
                             value=config['window_h'],
-                            info="Browser window height",
+                            info="Výška okna prohlížeče",
                         )
 
                     chrome_cdp = gr.Textbox(
-                        label="CDP URL",
+                        label="CDP pro vzdálené ladění Google",
                         placeholder="http://localhost:9222",
                         value="",
-                        info="CDP for google remote debugging",
+                        info="CDP pro vzdálené ladění Google",
                         interactive=True,  # Allow editing only if recording is enabled
                     )
 
                     save_recording_path = gr.Textbox(
-                        label="Recording Path",
-                        placeholder="e.g. ./tmp/record_videos",
+                        label="Cesta pro nahrávky",
+                        placeholder="např. ./tmp/record_videos",
                         value=config['save_recording_path'],
-                        info="Path to save browser recordings",
+                        info="Cesta pro ukládání nahrávek prohlížeče",
                         interactive=True,  # Allow editing only if recording is enabled
                     )
 
                     save_trace_path = gr.Textbox(
-                        label="Trace Path",
-                        placeholder="e.g. ./tmp/traces",
+                        label="Cesta pro trasování",
+                        placeholder="např. ./tmp/traces",
                         value=config['save_trace_path'],
-                        info="Path to save Agent traces",
+                        info="Cesta pro ukládání trasování agenta",
                         interactive=True,
                     )
 
                     save_agent_history_path = gr.Textbox(
-                        label="Agent History Save Path",
-                        placeholder="e.g., ./tmp/agent_history",
+                        label="Cesta pro historii agenta",
+                        placeholder="např. ./tmp/agent_history",
                         value=config['save_agent_history_path'],
-                        info="Specify the directory where agent history should be saved.",
+                        info="Zadejte adresář, kam se má ukládat historie agenta.",
                         interactive=True,
                     )
 
-            with gr.TabItem("🤖 Run Agent", id=4):
+            with gr.TabItem("🤖 Spustit agenta", id=4):
                 task = gr.Textbox(
-                    label="Task Description",
+                    label="Popis úkolu",
                     lines=4,
-                    placeholder="Enter your task here...",
+                    placeholder="Zadejte svůj úkol zde...",
                     value=config['task'],
-                    info="Describe what you want the agent to do",
+                    info="Popište, co chcete, aby agent udělal",
                 )
                 add_infos = gr.Textbox(
-                    label="Additional Information",
+                    label="Doplňující informace",
                     lines=3,
-                    placeholder="Add any helpful context or instructions...",
-                    info="Optional hints to help the LLM complete the task",
+                    placeholder="Přidejte jakýkoli užitečný kontext nebo instrukce...",
+                    info="Volitelné nápovědy, které pomohou LLM dokončit úkol",
                 )
 
                 with gr.Row():
-                    run_button = gr.Button("▶️ Run Agent", variant="primary", scale=2)
-                    stop_button = gr.Button("⏹️ Stop", variant="stop", scale=1)
+                    run_button = gr.Button("▶️ Spustit agenta", variant="primary", scale=2)
+                    stop_button = gr.Button("⏹️ Zastavit", variant="stop", scale=1)
 
                 with gr.Row():
                     browser_view = gr.HTML(
-                        value="<h1 style='width:80vw; height:50vh'>Waiting for browser session...</h1>",
-                        label="Live Browser View",
+                        value="<h1 style='width:80vw; height:50vh'>Čekání na relaci prohlížeče...</h1>",
+                        label="Živý náhled prohlížeče",
                     )
 
-                gr.Markdown("### Results")
+                gr.Markdown("### Výsledky")
                 with gr.Row():
                     with gr.Column():
                         final_result_output = gr.Textbox(
-                            label="Final Result", lines=3, show_label=True
+                            label="Konečný výsledek", lines=3, show_label=True
                         )
                     with gr.Column():
                         errors_output = gr.Textbox(
-                            label="Errors", lines=3, show_label=True
+                            label="Chyby", lines=3, show_label=True
                         )
                 with gr.Row():
                     with gr.Column():
                         model_actions_output = gr.Textbox(
-                            label="Model Actions", lines=3, show_label=True, visible=False
+                            label="Akce modelu", lines=3, show_label=True, visible=False
                         )
                     with gr.Column():
                         model_thoughts_output = gr.Textbox(
-                            label="Model Thoughts", lines=3, show_label=True, visible=False
+                            label="Myšlenky modelu", lines=3, show_label=True, visible=False
                         )
-                recording_gif = gr.Image(label="Result GIF", format="gif")
-                trace_file = gr.File(label="Trace File")
-                agent_history_file = gr.File(label="Agent History")
+                recording_gif = gr.Image(label="Výsledné GIF", format="gif")
+                trace_file = gr.File(label="Soubor trasování")
+                agent_history_file = gr.File(label="Historie agenta")
 
-            with gr.TabItem("🧐 Deep Research", id=5):
-                research_task_input = gr.Textbox(label="Research Task", lines=5,
-                                                 value="Compose a report on the use of Reinforcement Learning for training Large Language Models, encompassing its origins, current advancements, and future prospects, substantiated with examples of relevant models and techniques. The report should reflect original insights and analysis, moving beyond mere summarization of existing literature.")
+            with gr.TabItem("🧐 Hloubkový výzkum", id=5):
+                research_task_input = gr.Textbox(label="Výzkumný úkol", lines=5,
+                                                 value="Sestavte zprávu o využití posilovaného učení (Reinforcement Learning) pro trénink velkých jazykových modelů, zahrnující jeho původ, současný pokrok a budoucí perspektivy, podloženou příklady relevantních modelů a technik. Zpráva by měla odrážet originální postřehy a analýzu, přesahující pouhé shrnutí existující literatury.")
                 with gr.Row():
-                    max_search_iteration_input = gr.Number(label="Max Search Iteration", value=3,
-                                                           precision=0)  # precision=0 确保是整数
-                    max_query_per_iter_input = gr.Number(label="Max Query per Iteration", value=1,
-                                                         precision=0)  # precision=0 确保是整数
+                    max_search_iteration_input = gr.Number(label="Maximální počet iterací vyhledávání", value=3,
+                                                           precision=0)  # precision=0 zajišťuje, že je to celé číslo
+                    max_query_per_iter_input = gr.Number(label="Maximální počet dotazů na iteraci", value=1,
+                                                         precision=0)  # precision=0 zajišťuje, že je to celé číslo
                 with gr.Row():
-                    research_button = gr.Button("▶️ Run Deep Research", variant="primary", scale=2)
-                    stop_research_button = gr.Button("⏹ Stop", variant="stop", scale=1)
-                markdown_output_display = gr.Markdown(label="Research Report")
-                markdown_download = gr.File(label="Download Research Report")
+                    research_button = gr.Button("▶️ Spustit hloubkový výzkum", variant="primary", scale=2)
+                    stop_research_button = gr.Button("⏹ Zastavit", variant="stop", scale=1)
+                markdown_output_display = gr.Markdown(label="Výzkumná zpráva")
+                markdown_download = gr.File(label="Stáhnout výzkumnou zprávu")
 
             # Bind the stop button click event after errors_output is defined
             stop_button.click(
@@ -1017,7 +1017,7 @@ def create_ui(config, theme_name="Ocean"):
                 ],
             )
 
-            # Run Deep Research
+            # Spustit hloubkový výzkum
             research_button.click(
                 fn=run_deep_search,
                 inputs=[research_task_input, max_search_iteration_input, max_query_per_iter_input, llm_provider,
@@ -1032,7 +1032,7 @@ def create_ui(config, theme_name="Ocean"):
                 outputs=[stop_research_button, research_button],
             )
 
-            with gr.TabItem("🎥 Recordings", id=7, visible=True):
+            with gr.TabItem("🎥 Nahrávky", id=7, visible=True):
                 def list_recordings(save_recording_path):
                     if not os.path.exists(save_recording_path):
                         return []
@@ -1053,32 +1053,32 @@ def create_ui(config, theme_name="Ocean"):
                     return numbered_recordings
 
                 recordings_gallery = gr.Gallery(
-                    label="Recordings",
+                    label="Nahrávky",
                     value=list_recordings(config['save_recording_path']),
                     columns=3,
                     height="auto",
                     object_fit="contain"
                 )
 
-                refresh_button = gr.Button("🔄 Refresh Recordings", variant="secondary")
+                refresh_button = gr.Button("🔄 Obnovit nahrávky", variant="secondary")
                 refresh_button.click(
                     fn=list_recordings,
                     inputs=save_recording_path,
                     outputs=recordings_gallery
                 )
 
-            with gr.TabItem("📁 UI Configuration", id=8):
+            with gr.TabItem("📁 Konfigurace UI", id=8):
                 config_file_input = gr.File(
-                    label="Load Config File",
+                    label="Načíst konfigurační soubor",
                     file_types=[".pkl"],
                     interactive=True
                 )
                 with gr.Row():
-                    load_config_button = gr.Button("Load Existing Config From File", variant="primary")
-                    save_config_button = gr.Button("Save Current Config", variant="primary")
+                    load_config_button = gr.Button("Načíst existující konfiguraci ze souboru", variant="primary")
+                    save_config_button = gr.Button("Uložit aktuální konfiguraci", variant="primary")
 
                 config_status = gr.Textbox(
-                    label="Status",
+                    label="Stav",
                     lines=2,
                     interactive=False
                 )
@@ -1128,11 +1128,11 @@ def create_ui(config, theme_name="Ocean"):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Gradio UI for Browser Agent")
-    parser.add_argument("--ip", type=str, default="127.0.0.1", help="IP address to bind to")
-    parser.add_argument("--port", type=int, default=7788, help="Port to listen on")
-    parser.add_argument("--theme", type=str, default="Ocean", choices=theme_map.keys(), help="Theme to use for the UI")
-    parser.add_argument("--dark-mode", action="store_true", help="Enable dark mode")
+    parser = argparse.ArgumentParser(description="Gradio UI pro agenta prohlížeče")
+    parser.add_argument("--ip", type=str, default="127.0.0.1", help="IP adresa, na kterou se má navázat")
+    parser.add_argument("--port", type=int, default=7788, help="Port, na kterém se má naslouchat")
+    parser.add_argument("--theme", type=str, default="Ocean", choices=theme_map.keys(), help="Motiv, který se má použít pro UI")
+    parser.add_argument("--dark-mode", action="store_true", help="Povolit tmavý režim")
     args = parser.parse_args()
 
     config_dict = default_config()

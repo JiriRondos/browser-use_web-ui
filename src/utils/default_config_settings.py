@@ -28,7 +28,7 @@ def default_config():
         "save_recording_path": "./tmp/record_videos",
         "save_trace_path": "./tmp/traces",
         "save_agent_history_path": "./tmp/agent_history",
-        "task": "go to google.com and type 'OpenAI' click search and give me the first url",
+        "task": "jdi na google.com, napiš 'OpenAI', klikni na vyhledávání a dej mi první URL",
     }
 
 
@@ -39,7 +39,7 @@ def load_config_from_file(config_file):
             settings = pickle.load(f)
         return settings
     except Exception as e:
-        return f"Error loading configuration: {str(e)}"
+        return f"Chyba při načítání konfigurace: {str(e)}"
 
 
 def save_config_to_file(settings, save_dir="./tmp/webui_settings"):
@@ -48,7 +48,7 @@ def save_config_to_file(settings, save_dir="./tmp/webui_settings"):
     config_file = os.path.join(save_dir, f"{uuid.uuid4()}.pkl")
     with open(config_file, 'wb') as f:
         pickle.dump(settings, f)
-    return f"Configuration saved to {config_file}"
+    return f"Konfigurace uložena do {config_file}"
 
 
 def save_current_config(*args):
@@ -106,7 +106,7 @@ def update_ui_from_config(config_file):
                 gr.update(value=loaded_config.get("save_trace_path", "./tmp/traces")),
                 gr.update(value=loaded_config.get("save_agent_history_path", "./tmp/agent_history")),
                 gr.update(value=loaded_config.get("task", "")),
-                "Configuration loaded successfully."
+                "Konfigurace úspěšně načtena."
             )
         else:
             return (
@@ -114,12 +114,12 @@ def update_ui_from_config(config_file):
                 gr.update(), gr.update(), gr.update(), gr.update(), gr.update(),
                 gr.update(), gr.update(), gr.update(), gr.update(), gr.update(),
                 gr.update(), gr.update(), gr.update(), gr.update(), gr.update(),
-                gr.update(), "Error: Invalid configuration file."
+                gr.update(), "Chyba: Neplatný konfigurační soubor."
             )
     return (
         gr.update(), gr.update(), gr.update(), gr.update(), gr.update(),
         gr.update(), gr.update(), gr.update(), gr.update(), gr.update(),
         gr.update(), gr.update(), gr.update(), gr.update(), gr.update(),
         gr.update(), gr.update(), gr.update(), gr.update(), gr.update(),
-        gr.update(), "No file selected."
+        gr.update(), "Nebyl vybrán žádný soubor."
     )
