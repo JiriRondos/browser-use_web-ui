@@ -1091,7 +1091,7 @@ def create_ui(config, theme_name="Ocean", language="en"):
 
                 with gr.TabItem(i18n("tabs.deep_research"), id=5):
                     research_task_input = gr.Textbox(label=i18n("deep_research.research_task"), lines=5,
-                                                     value="Vytvořte zprávu o použití zpětnovazebního učení (Reinforcement Learning) pro trénování velkých jazykových modelů, včetně jeho počátků, současného vývoje a budoucích možností, s příklady relevantních modelů a technik. Zpráva by měla obsahovat vlastní postřehy a analýzu, ne jen shrnutí existující literatury.")
+                                                     value="Vytvořte zprávu o použití strojového učení pro trénování velkých jazykových modelů, včetně jeho počátků, současného vývoje a budoucích možností, s příklady relevantních modelů a technik. Zpráva by měla obsahovat vlastní postřehy a analýzu, ne jen shrnutí existující literatury.")
                     with gr.Row():
                         max_search_iteration_input = gr.Number(label=i18n("deep_research.max_search_iterations"), value=3,
                                                                precision=0)
