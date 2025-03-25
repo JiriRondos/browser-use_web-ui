@@ -1,98 +1,92 @@
 {
-    "common": {
-      "submit": "Odeslat",
-      "clear": "Vymazat",
-      "examples": "Příklady",
-      "stop": "Zastavit",
-      "run": "Spustit",
-      "refresh": "Obnovit"
-    },
-    "interface": {
-      "title": "Browser Use WebUI",
-      "subtitle": "Ovládejte svůj prohlížeč s pomocí umělé inteligence"
-    },
-    "tabs": {
-      "agent_settings": "⚙️ Nastavení agenta",
-      "llm_settings": "🔧 Nastavení LLM",
-      "browser_settings": "🌐 Nastavení prohlížeče",
-      "task": "📝 Úkol",
-      "output": "📊 Výstup",
-      "deep_research": "🔍 Hloubkový výzkum",
-      "recordings": "🎥 Nahrávky",
-      "ui_configuration": "📁 Konfigurace UI"
-    },
-    "agent_settings": {
-      "agent_type": "Typ agenta",
-      "agent_type_info": "Vyberte typ agenta, který chcete použít",
-      "max_steps": "Maximální počet kroků",
-      "max_steps_info": "Maximální počet kroků, které agent provede",
-      "max_actions_per_step": "Maximální počet akcí na krok",
-      "max_actions_per_step_info": "Maximální počet akcí, které agent provede v jednom kroku",
-      "use_vision": "Použít vidění",
-      "use_vision_info": "Povolit schopnosti vizuálního zpracování",
-      "max_input_tokens": "Maximální počet vstupních tokenů",
-      "tool_calling_method": "Metoda volání nástrojů",
-      "tool_calling_method_info": "Název funkce volání nástrojů"
-    },
-    "llm_settings": {
-      "llm_provider": "Poskytovatel LLM",
-      "llm_provider_info": "Vyberte poskytovatele jazykového modelu",
-      "llm_model": "Model LLM",
-      "llm_model_info": "Vyberte jazykový model",
-      "llm_num_ctx": "Velikost kontextu",
-      "llm_num_ctx_info": "Maximální počet tokenů v kontextu",
-      "llm_temperature": "Teplota",
-      "llm_temperature_info": "Vyšší hodnota = kreativnější výstup",
-      "llm_base_url": "Základní URL",
-      "llm_base_url_info": "URL adresa API poskytovatele LLM",
-      "llm_api_key": "API klíč",
-      "llm_api_key_info": "API klíč pro přístup k LLM"
-    },
-    "browser_settings": {
-      "use_own_browser": "Použít vlastní prohlížeč",
-      "use_own_browser_info": "Použít existující instanci prohlížeče místo spuštění nové",
-      "keep_browser_open": "Nechat prohlížeč otevřený",
-      "keep_browser_open_info": "Ponechat prohlížeč otevřený po dokončení úkolu",
-      "headless": "Bez grafického rozhraní",
-      "headless_info": "Spustit prohlížeč bez viditelného okna",
-      "disable_security": "Zakázat bezpečnostní omezení",
-      "disable_security_info": "Zakázat bezpečnostní omezení prohlížeče (nebezpečné)",
-      "window_width": "Šířka okna",
-      "window_height": "Výška okna",
-      "chrome_cdp": "Chrome CDP URL",
-      "chrome_cdp_info": "URL pro připojení k existující instanci Chrome"
-    },
-    "task": {
-      "task_input": "Zadejte úkol",
-      "task_input_info": "Co má agent udělat?",
-      "add_infos": "Další informace",
-      "add_infos_info": "Další kontext nebo instrukce pro agenta",
-      "run_button": "Spustit agenta",
-      "stop_button": "Zastavit agenta"
-    },
-    "output": {
-      "browser_view": "Náhled prohlížeče",
-      "final_result": "Konečný výsledek",
-      "errors": "Chyby",
-      "model_actions": "Akce modelu",
-      "model_thoughts": "Myšlenky modelu"
-    },
-    "deep_research": {
-      "research_task": "Výzkumný úkol",
-      "research_task_info": "Co má agent prozkoumat?",
-      "max_search_iterations": "Maximální počet iterací vyhledávání",
-      "max_queries_per_iteration": "Maximální počet dotazů na iteraci",
-      "run_research": "Spustit výzkum",
-      "stop_research": "Zastavit výzkum"
-    },
-    "recordings": {
-      "recordings_gallery": "Nahrávky",
-      "refresh_recordings": "🔄 Obnovit nahrávky"
-    },
-    "ui_configuration": {
-      "load_config_file": "Načíst konfigurační soubor",
-      "load_config_button": "Načíst existující konfiguraci ze souboru",
-      "save_config_button": "Uložit aktuální konfiguraci",
-      "status": "Stav"
-    }
+  "interface": {
+    "title": "Prohlížečový Agent",
+    "subtitle": "Ovládejte prohlížeč pomocí umělé inteligence"
+  },
+  "tabs": {
+    "agent_settings": "Nastavení agenta",
+    "llm_settings": "Nastavení LLM",
+    "browser_settings": "Nastavení prohlížeče",
+    "task": "Úkol",
+    "deep_research": "Hloubkový výzkum",
+    "recordings": "Nahrávky",
+    "ui_configuration": "Konfigurace rozhraní"
+  },
+  "agent_settings": {
+    "agent_type": "Typ agenta",
+    "agent_type_info": "Vyberte typ agenta, který chcete použít",
+    "max_steps": "Maximální počet kroků",
+    "max_steps_info": "Maximální počet kroků, které agent provede",
+    "max_actions_per_step": "Maximální počet akcí na krok",
+    "max_actions_per_step_info": "Maximální počet akcí, které agent provede v jednom kroku",
+    "use_vision": "Použít vidění",
+    "use_vision_info": "Povolit schopnosti vidění pro agenta",
+    "tool_calling_method": "Metoda volání nástrojů",
+    "tool_calling_method_info": "Metoda, která se použije pro volání nástrojů",
+    "max_input_tokens": "Maximální počet vstupních tokenů",
+    "max_input_tokens_info": "Maximální počet tokenů, které se použijí pro vstup"
+  },
+  "llm_settings": {
+    "provider": "Poskytovatel LLM",
+    "provider_info": "Vyberte poskytovatele LLM, kterého chcete použít",
+    "model_name": "Název modelu",
+    "model_name_info": "Vyberte model, který chcete použít",
+    "num_ctx": "Délka kontextu",
+    "num_ctx_info": "Maximální délka kontextu pro model",
+    "temperature": "Teplota",
+    "temperature_info": "Teplota pro model (vyšší = kreativnější, nižší = determinističtější)",
+    "base_url": "Základní URL",
+    "base_url_info": "Základní URL pro API LLM",
+    "api_key": "API klíč",
+    "api_key_info": "API klíč pro poskytovatele LLM"
+  },
+  "browser_settings": {
+    "use_own_browser": "Použít vlastní prohlížeč",
+    "use_own_browser_info": "Použít vlastní instanci prohlížeče",
+    "keep_browser_open": "Nechat prohlížeč otevřený",
+    "keep_browser_open_info": "Nechat prohlížeč otevřený po dokončení agenta",
+    "headless": "Bez grafického rozhraní",
+    "headless_info": "Spustit prohlížeč bez grafického rozhraní",
+    "disable_security": "Vypnout zabezpečení",
+    "disable_security_info": "Vypnout bezpečnostní funkce prohlížeče",
+    "window_width": "Šířka okna",
+    "window_height": "Výška okna",
+    "chrome_cdp": "Chrome CDP URL",
+    "chrome_cdp_info": "URL pro Chrome DevTools Protocol"
+  },
+  "task": {
+    "task_input": "Úkol",
+    "task_input_info": "Zadejte úkol, který má agent provést",
+    "add_infos": "Dodatečné informace",
+    "add_infos_info": "Poskytněte jakékoli dodatečné informace nebo kontext pro agenta",
+    "run_button": "Spustit",
+    "stop_button": "Zastavit"
+  },
+  "output": {
+    "browser_view": "Náhled prohlížeče",
+    "final_result": "Konečný výsledek",
+    "errors": "Chyby",
+    "model_actions": "Akce modelu",
+    "model_thoughts": "Myšlenky modelu",
+    "recording": "Nahrávka",
+    "trace_file": "Soubor trasování",
+    "agent_history_file": "Soubor historie agenta"
+  },
+  "deep_research": {
+    "research_task": "Výzkumný úkol",
+    "max_search_iterations": "Maximální počet iterací vyhledávání",
+    "max_queries_per_iteration": "Maximální počet dotazů na iteraci",
+    "run_research": "Spustit výzkum",
+    "stop_research": "Zastavit výzkum"
+  },
+  "recordings": {
+    "gallery": "Galerie nahrávek",
+    "refresh_recordings": "Obnovit nahrávky"
+  },
+  "ui_configuration": {
+    "load_config_file": "Načíst konfigurační soubor",
+    "load_config_button": "Načíst konfiguraci",
+    "save_config_button": "Uložit konfiguraci",
+    "status": "Stav"
+  }
 }

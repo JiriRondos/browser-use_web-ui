@@ -1,98 +1,92 @@
 {
-  "common": {
-    "submit": "Submit",
-    "clear": "Clear",
-    "examples": "Examples",
-    "stop": "Stop",
-    "run": "Run",
-    "refresh": "Refresh"
-  },
   "interface": {
-    "title": "Browser Use WebUI",
-    "subtitle": "Control your browser with AI assistance"
+    "title": "Browser Agent",
+    "subtitle": "Control a browser with AI"
   },
   "tabs": {
-    "agent_settings": "⚙️ Agent Settings",
-    "llm_settings": "🔧 LLM Settings",
-    "browser_settings": "🌐 Browser Settings",
-    "task": "📝 Task",
-    "output": "📊 Output",
-    "deep_research": "🔍 Deep Research",
-    "recordings": "🎥 Recordings",
-    "ui_configuration": "📁 UI Configuration"
+    "agent_settings": "Agent Settings",
+    "llm_settings": "LLM Settings",
+    "browser_settings": "Browser Settings",
+    "task": "Task",
+    "deep_research": "Deep Research",
+    "recordings": "Recordings",
+    "ui_configuration": "UI Configuration"
   },
   "agent_settings": {
     "agent_type": "Agent Type",
     "agent_type_info": "Select the type of agent to use",
-    "max_steps": "Max Run Steps",
+    "max_steps": "Max Steps",
     "max_steps_info": "Maximum number of steps the agent will take",
-    "max_actions_per_step": "Max Actions per Step",
+    "max_actions_per_step": "Max Actions Per Step",
     "max_actions_per_step_info": "Maximum number of actions the agent will take per step",
     "use_vision": "Use Vision",
-    "use_vision_info": "Enable visual processing capabilities",
-    "max_input_tokens": "Max Input Tokens",
+    "use_vision_info": "Enable vision capabilities for the agent",
     "tool_calling_method": "Tool Calling Method",
-    "tool_calling_method_info": "Tool Calls Function Name"
+    "tool_calling_method_info": "Method to use for tool calling",
+    "max_input_tokens": "Max Input Tokens",
+    "max_input_tokens_info": "Maximum number of tokens to use for input"
   },
   "llm_settings": {
-    "llm_provider": "LLM Provider",
-    "llm_provider_info": "Select the language model provider",
-    "llm_model": "LLM Model",
-    "llm_model_info": "Select the language model",
-    "llm_num_ctx": "Context Size",
-    "llm_num_ctx_info": "Maximum number of tokens in context",
-    "llm_temperature": "Temperature",
-    "llm_temperature_info": "Higher value = more creative output",
-    "llm_base_url": "Base URL",
-    "llm_base_url_info": "API URL of the LLM provider",
-    "llm_api_key": "API Key",
-    "llm_api_key_info": "API key for accessing the LLM"
+    "provider": "LLM Provider",
+    "provider_info": "Select the LLM provider to use",
+    "model_name": "Model Name",
+    "model_name_info": "Select the model to use",
+    "num_ctx": "Context Length",
+    "num_ctx_info": "Maximum context length for the model",
+    "temperature": "Temperature",
+    "temperature_info": "Temperature for the model (higher = more creative, lower = more deterministic)",
+    "base_url": "Base URL",
+    "base_url_info": "Base URL for the LLM API",
+    "api_key": "API Key",
+    "api_key_info": "API key for the LLM provider"
   },
   "browser_settings": {
     "use_own_browser": "Use Own Browser",
-    "use_own_browser_info": "Use existing browser instance instead of launching a new one",
+    "use_own_browser_info": "Use your own browser instance",
     "keep_browser_open": "Keep Browser Open",
-    "keep_browser_open_info": "Keep the browser open after task completion",
+    "keep_browser_open_info": "Keep the browser open after the agent finishes",
     "headless": "Headless",
-    "headless_info": "Run browser without visible window",
+    "headless_info": "Run the browser in headless mode",
     "disable_security": "Disable Security",
-    "disable_security_info": "Disable browser security restrictions (dangerous)",
+    "disable_security_info": "Disable browser security features",
     "window_width": "Window Width",
     "window_height": "Window Height",
     "chrome_cdp": "Chrome CDP URL",
-    "chrome_cdp_info": "URL for connecting to existing Chrome instance"
+    "chrome_cdp_info": "URL for Chrome DevTools Protocol"
   },
   "task": {
-    "task_input": "Task Input",
-    "task_input_info": "What should the agent do?",
+    "task_input": "Task",
+    "task_input_info": "Enter the task for the agent to perform",
     "add_infos": "Additional Information",
-    "add_infos_info": "Additional context or instructions for the agent",
-    "run_button": "Run Agent",
-    "stop_button": "Stop Agent"
+    "add_infos_info": "Provide any additional information or context for the agent",
+    "run_button": "Run",
+    "stop_button": "Stop"
   },
   "output": {
     "browser_view": "Browser View",
     "final_result": "Final Result",
     "errors": "Errors",
     "model_actions": "Model Actions",
-    "model_thoughts": "Model Thoughts"
+    "model_thoughts": "Model Thoughts",
+    "recording": "Recording",
+    "trace_file": "Trace File",
+    "agent_history_file": "Agent History File"
   },
   "deep_research": {
     "research_task": "Research Task",
-    "research_task_info": "What should the agent research?",
     "max_search_iterations": "Max Search Iterations",
-    "max_queries_per_iteration": "Max Queries per Iteration",
+    "max_queries_per_iteration": "Max Queries Per Iteration",
     "run_research": "Run Research",
     "stop_research": "Stop Research"
   },
   "recordings": {
-    "recordings_gallery": "Recordings",
-    "refresh_recordings": "🔄 Refresh Recordings"
+    "gallery": "Recordings Gallery",
+    "refresh_recordings": "Refresh Recordings"
   },
   "ui_configuration": {
-    "load_config_file": "Load Config File",
-    "load_config_button": "Load Existing Config From File",
-    "save_config_button": "Save Current Config",
+    "load_config_file": "Load Configuration File",
+    "load_config_button": "Load Configuration",
+    "save_config_button": "Save Configuration",
     "status": "Status"
   }
 }
