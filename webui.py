@@ -13,6 +13,53 @@ import os
 logger = logging.getLogger(__name__)
 
 import gradio as gr
+# Náhrada za gradio_i18n
+import json
+import os
+
+class SimpleTranslate:
+    def __init__(self, languages=None, default_language="en", locales_dir="locales"):
+        self.languages = languages or ["en"]
+        self.default_language = default_language
+        self.locales_dir = locales_dir
+        self.current_language = default_language
+        self.translations = {}
+
+        # Načtení překladů
+        for lang in self.languages:
+            try:
+                with open(os.path.join(self.locales_dir, f"{lang}.json"), "r", encoding="utf-8") as f:
+                    self.translations[lang] = json.load(f)
+            except Exception as e:
+                print(f"Chyba při načítání překladu pro {lang}: {e}")
+                self.translations[lang] = {}
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
+    def __call__(self, key):
+        # Rozdělení klíče podle teček
+        parts = key.split(".")
+
+        # Získání překladu
+        translation = self.translations.get(self.current_language, {})
+        for part in parts:
+            translation = translation.get(part, None)
+            if translation is None:
+                # Pokud překlad neexistuje, vrátíme klíč
+                return key
+
+        return translation
+
+    def set_language(self, language):
+        if language in self.languages:
+            self.current_language = language
+
+# Použití SimpleTranslate místo Translate
+Translate = SimpleTranslate
 
 from browser_use.agent.service import Agent
 from playwright.async_api import async_playwright
@@ -70,7 +117,7 @@ def resolve_sensitive_env_variables(text):
     return result
 
 
-async def stop_agent():
+def stop_agent():
     """Request the agent to stop and update UI with enhanced feedback"""
     global _global_agent
 
@@ -96,7 +143,7 @@ async def stop_agent():
         )
 
 
-async def stop_research_agent():
+def stop_research_agent():
     """Request the agent to stop and update UI with enhanced feedback"""
     global _global_agent_state
 
@@ -715,7 +762,55 @@ async def run_deep_search(research_task, max_search_iteration_input, max_query_p
     return markdown_content, file_path, gr.update(value="Zastavit", interactive=True), gr.update(interactive=True)
 
 
-def create_ui(config, theme_name="Ocean"):
+def create_ui(config, theme_name="Ocean", language="en"):
+    # Definice proměnných, které budou použity v různých blocích
+    agent_type = None
+    max_steps = None
+    max_actions_per_step = None
+    use_vision = None
+    tool_calling_method = None
+    llm_provider = None
+    llm_model_name = None
+    llm_num_ctx = None
+    llm_temperature = None
+    llm_base_url = None
+    llm_api_key = None
+    use_own_browser = None
+    keep_browser_open = None
+    headless = None
+    disable_security = None
+    enable_recording = None
+    window_w = None
+    window_h = None
+    save_recording_path = None
+    save_trace_path = None
+    save_agent_history_path = None
+    task = None
+    add_infos = None
+    run_button = None
+    stop_button = None
+    browser_view = None
+    final_result_output = None
+    errors_output = None
+    model_actions_output = None
+    model_thoughts_output = None
+    recording_gif = None
+    trace_file = None
+    agent_history_file = None
+    research_task_input = None
+    max_search_iteration_input = None
+    max_query_per_iter_input = None
+    research_button = None
+    stop_research_button = None
+    markdown_output_display = None
+    markdown_download = None
+    recordings_gallery = None
+    refresh_button = None
+    config_file_input = None
+    load_config_button = None
+    save_config_button = None
+    config_status = None
+
     css = """
     .gradio-container {
         max-width: 1200px !important;
@@ -733,6 +828,7 @@ def create_ui(config, theme_name="Ocean"):
     }
     """
 
+<<<<<<< HEAD
     with gr.Blocks(
             title="Webové Rozhraní Prohlížeče", theme=theme_map[theme_name], css=css
     ) as demo:
@@ -781,8 +877,56 @@ def create_ui(config, theme_name="Ocean"):
                             label="Maximální počet vstupních tokenů",
                             value=128000,
                             precision=0
+=======
+    # Initialize translation
+    import os
+    locales_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "locales")
+    with Translate(
+        languages=["en", "cs"],  # Supported languages
+        default_language=language,  # Default language
+        locales_dir=locales_dir  # Path to translations directory
+    ) as i18n:
+        with gr.Blocks(
+                title="Browser Use WebUI", theme=theme_map[theme_name], css=css
+        ) as demo:
+            # Language selector
+            with gr.Row():
+                language_dropdown = gr.Dropdown(
+                    choices=["English", "Čeština"],
+                    value="English" if language == "en" else "Čeština",
+                    label="Language / Jazyk"
+                )
 
+            # Function to change language
+            def change_language(lang):
+                if lang == "English":
+                    i18n.set_language("en")
+                elif lang == "Čeština":
+                    i18n.set_language("cs")
+                return gr.update()
+>>>>>>> c10902c3a2392763cff75468ca20b83331999751
+
+            language_dropdown.change(fn=change_language, inputs=language_dropdown, outputs=None)
+
+            with gr.Row():
+                gr.Markdown(
+                    f"""
+                    # 🌐 {i18n("interface.title")}
+                    ### {i18n("interface.subtitle")}
+                    """,
+                    elem_classes=["header-text"],
+                )
+
+            with gr.Tabs() as tabs:
+                with gr.TabItem(i18n("tabs.agent_settings"), id=1):
+                    with gr.Group():
+                        agent_type = gr.Radio(
+                            ["org", "custom"],
+                            label=i18n("agent_settings.agent_type"),
+                            value=config['agent_type'],
+                            info=i18n("agent_settings.agent_type_info"),
                         )
+<<<<<<< HEAD
                         tool_calling_method = gr.Dropdown(
                             label="Metoda volání nástrojů",
                             value=config['tool_calling_method'],
@@ -837,19 +981,101 @@ def create_ui(config, theme_name="Ocean"):
                             type="password",
                             value=config['llm_api_key'],
                             info="Váš API klíč (ponechte prázdné pro použití .env)"
+=======
+                        with gr.Column():
+                            max_steps = gr.Slider(
+                                minimum=1,
+                                maximum=200,
+                                value=config['max_steps'],
+                                step=1,
+                                label=i18n("agent_settings.max_steps"),
+                                info=i18n("agent_settings.max_steps_info"),
+                            )
+                            max_actions_per_step = gr.Slider(
+                                minimum=1,
+                                maximum=20,
+                                value=config['max_actions_per_step'],
+                                step=1,
+                                label=i18n("agent_settings.max_actions_per_step"),
+                                info=i18n("agent_settings.max_actions_per_step_info"),
+                            )
+                        with gr.Column():
+                            use_vision = gr.Checkbox(
+                                label=i18n("agent_settings.use_vision"),
+                                value=config['use_vision'],
+                                info=i18n("agent_settings.use_vision_info"),
+                            )
+                            max_input_tokens = gr.Number(
+                                label=i18n("agent_settings.max_input_tokens"),
+                                value=128000,
+                                precision=0
+
+                            )
+                            tool_calling_method = gr.Dropdown(
+                                label=i18n("agent_settings.tool_calling_method"),
+                                value=config['tool_calling_method'],
+                                interactive=True,
+                                allow_custom_value=True,  # Allow users to input custom model names
+                                choices=["auto", "json_schema", "function_calling"],
+                                info=i18n("agent_settings.tool_calling_method_info"),
+                                visible=False
+                            )
+
+                with gr.TabItem(i18n("tabs.llm_settings"), id=2):
+                    with gr.Group():
+                        llm_provider = gr.Dropdown(
+                            choices=[provider for provider, model in utils.model_names.items()],
+                            label=i18n("llm_settings.llm_provider"),
+                            value=config['llm_provider'],
+                            info=i18n("llm_settings.llm_provider_info")
                         )
+                        llm_model_name = gr.Dropdown(
+                            label=i18n("llm_settings.llm_model"),
+                            choices=utils.model_names['openai'],
+                            value=config['llm_model_name'],
+                            interactive=True,
+                            allow_custom_value=True,  # Allow users to input custom model names
+                            info=i18n("llm_settings.llm_model_info")
+                        )
+                        llm_num_ctx = gr.Slider(
+                            minimum=2 ** 8,
+                            maximum=2 ** 16,
+                            value=config['llm_num_ctx'],
+                            step=1,
+                            label=i18n("llm_settings.llm_num_ctx"),
+                            info=i18n("llm_settings.llm_num_ctx_info"),
+                            visible=config['llm_provider'] == "ollama"
+                        )
+                        llm_temperature = gr.Slider(
+                            minimum=0.0,
+                            maximum=2.0,
+                            value=config['llm_temperature'],
+                            step=0.1,
+                            label=i18n("llm_settings.llm_temperature"),
+                            info=i18n("llm_settings.llm_temperature_info")
+>>>>>>> c10902c3a2392763cff75468ca20b83331999751
+                        )
+                        with gr.Row():
+                            llm_base_url = gr.Textbox(
+                                label=i18n("llm_settings.llm_base_url"),
+                                value=config['llm_base_url'],
+                                info=i18n("llm_settings.llm_base_url_info")
+                            )
+                            llm_api_key = gr.Textbox(
+                                label=i18n("llm_settings.llm_api_key"),
+                                type="password",
+                                value=config['llm_api_key'],
+                                info=i18n("llm_settings.llm_api_key_info")
+                            )
 
             # Change event to update context length slider
             def update_llm_num_ctx_visibility(llm_provider):
                 return gr.update(visible=llm_provider == "ollama")
 
             # Bind the change event of llm_provider to update the visibility of context length slider
-            llm_provider.change(
-                fn=update_llm_num_ctx_visibility,
-                inputs=llm_provider,
-                outputs=llm_num_ctx
-            )
+            # Toto volání přesuneme na konec funkce create_ui
 
+<<<<<<< HEAD
             with gr.TabItem("🌐 Nastavení prohlížeče", id=3):
                 with gr.Group():
                     with gr.Row():
@@ -877,9 +1103,108 @@ def create_ui(config, theme_name="Ocean"):
                             label="Povolit nahrávání",
                             value=config['enable_recording'],
                             info="Povolit ukládání nahrávek prohlížeče",
+=======
+                with gr.TabItem(i18n("tabs.browser_settings"), id=3):
+                    with gr.Group():
+                        with gr.Row():
+                            use_own_browser = gr.Checkbox(
+                                label=i18n("browser_settings.use_own_browser"),
+                                value=config['use_own_browser'],
+                                info=i18n("browser_settings.use_own_browser_info"),
+                            )
+                            keep_browser_open = gr.Checkbox(
+                                label=i18n("browser_settings.keep_browser_open"),
+                                value=config['keep_browser_open'],
+                                info=i18n("browser_settings.keep_browser_open_info"),
+                            )
+                            headless = gr.Checkbox(
+                                label=i18n("browser_settings.headless"),
+                                value=config['headless'],
+                                info=i18n("browser_settings.headless_info"),
+                            )
+                            disable_security = gr.Checkbox(
+                                label=i18n("browser_settings.disable_security"),
+                                value=config['disable_security'],
+                                info=i18n("browser_settings.disable_security_info"),
+                            )
+                            enable_recording = gr.Checkbox(
+                                label="Enable Recording",
+                                value=config['enable_recording'],
+                                info="Enable saving browser recordings",
+                            )
+
+                        with gr.Row():
+                            window_w = gr.Number(
+                                label=i18n("browser_settings.window_width"),
+                                value=config['window_w'],
+                                info="Browser window width",
+                            )
+                            window_h = gr.Number(
+                                label=i18n("browser_settings.window_height"),
+                                value=config['window_h'],
+                                info="Browser window height",
+                            )
+
+                        chrome_cdp = gr.Textbox(
+                            label=i18n("browser_settings.chrome_cdp"),
+                            placeholder="http://localhost:9222",
+                            value="",
+                            info=i18n("browser_settings.chrome_cdp_info"),
+                            interactive=True,  # Allow editing only if recording is enabled
                         )
 
+                        save_recording_path = gr.Textbox(
+                            label="Recording Path",
+                            placeholder="e.g. ./tmp/record_videos",
+                            value=config['save_recording_path'],
+                            info="Path to save browser recordings",
+                            interactive=True,  # Allow editing only if recording is enabled
+                        )
+
+                        save_trace_path = gr.Textbox(
+                            label="Trace Path",
+                            placeholder="e.g. ./tmp/traces",
+                            value=config['save_trace_path'],
+                            info="Path to save Agent traces",
+                            interactive=True,
+                        )
+
+                        save_agent_history_path = gr.Textbox(
+                            label="Agent History Save Path",
+                            placeholder="e.g., ./tmp/agent_history",
+                            value=config['save_agent_history_path'],
+                            info="Specify the directory where agent history should be saved.",
+                            interactive=True,
+                        )
+
+                        # Add event handlers for browser settings
+                        enable_recording.change(
+                            lambda enabled: gr.update(interactive=enabled),
+                            inputs=enable_recording,
+                            outputs=save_recording_path
+>>>>>>> c10902c3a2392763cff75468ca20b83331999751
+                        )
+
+                        use_own_browser.change(fn=close_global_browser)
+                        keep_browser_open.change(fn=close_global_browser)
+
+                with gr.TabItem(i18n("tabs.task"), id=4):
+                    task = gr.Textbox(
+                        label=i18n("task.task_input"),
+                        lines=4,
+                        placeholder="Enter your task here...",
+                        value=config['task'],
+                        info=i18n("task.task_input_info"),
+                    )
+                    add_infos = gr.Textbox(
+                        label=i18n("task.add_infos"),
+                        lines=3,
+                        placeholder="Add any helpful context or instructions...",
+                        info=i18n("task.add_infos_info"),
+                    )
+
                     with gr.Row():
+<<<<<<< HEAD
                         window_w = gr.Number(
                             label="Šířka okna",
                             value=config['window_w'],
@@ -1031,6 +1356,103 @@ def create_ui(config, theme_name="Ocean"):
                 inputs=[],
                 outputs=[stop_research_button, research_button],
             )
+=======
+                        run_button = gr.Button(i18n("task.run_button"), variant="primary", scale=2)
+                        stop_button = gr.Button(i18n("task.stop_button"), variant="stop", scale=1)
+
+                    with gr.Row():
+                        browser_view = gr.HTML(
+                            value="<h1 style='width:80vw; height:50vh'>Waiting for browser session...</h1>",
+                            label=i18n("output.browser_view"),
+                        )
+
+                    gr.Markdown("### Results")
+                    with gr.Row():
+                        with gr.Column():
+                            final_result_output = gr.Textbox(
+                                label=i18n("output.final_result"), lines=3, show_label=True
+                            )
+                        with gr.Column():
+                            errors_output = gr.Textbox(
+                                label=i18n("output.errors"), lines=3, show_label=True
+                            )
+                    with gr.Row():
+                        with gr.Column():
+                            model_actions_output = gr.Textbox(
+                                label=i18n("output.model_actions"), lines=3, show_label=True, visible=False
+                            )
+                        with gr.Column():
+                            model_thoughts_output = gr.Textbox(
+                                label=i18n("output.model_thoughts"), lines=3, show_label=True, visible=False
+                            )
+                    recording_gif = gr.Image(label="Result GIF", format="gif")
+                    trace_file = gr.File(label="Trace File")
+                    agent_history_file = gr.File(label="Agent History")
+
+                    # Bind the stop button click event
+                    stop_button.click(
+                        fn=stop_agent,
+                        inputs=[],
+                        outputs=[stop_button, run_button],
+                    )
+
+                    # Run button click handler
+                    run_button.click(
+                        fn=run_with_stream,
+                        inputs=[
+                            agent_type, llm_provider, llm_model_name, llm_num_ctx, llm_temperature, llm_base_url,
+                            llm_api_key,
+                            use_own_browser, keep_browser_open, headless, disable_security, window_w, window_h,
+                            save_recording_path, save_agent_history_path, save_trace_path,  # Include the new path
+                            enable_recording, task, add_infos, max_steps, use_vision, max_actions_per_step,
+                            tool_calling_method, chrome_cdp, max_input_tokens
+                        ],
+                        outputs=[
+                            browser_view,  # Browser view
+                            final_result_output,  # Final result
+                            errors_output,  # Errors
+                            model_actions_output,  # Model actions
+                            model_thoughts_output,  # Model thoughts
+                            recording_gif,  # Latest recording
+                            trace_file,  # Trace file
+                            agent_history_file,  # Agent history file
+                            stop_button,  # Stop button
+                            run_button  # Run button
+                        ],
+                    )
+
+                with gr.TabItem(i18n("tabs.deep_research"), id=5):
+                    research_task_input = gr.Textbox(label=i18n("deep_research.research_task"), lines=5,
+                                                     value="Compose a report on the use of Reinforcement Learning for training Large Language Models, encompassing its origins, current advancements, and future prospects, substantiated with examples of relevant models and techniques. The report should reflect original insights and analysis, moving beyond mere summarization of existing literature.")
+                    with gr.Row():
+                        max_search_iteration_input = gr.Number(label=i18n("deep_research.max_search_iterations"), value=3,
+                                                               precision=0)
+                        max_query_per_iter_input = gr.Number(label=i18n("deep_research.max_queries_per_iteration"), value=1,
+                                                             precision=0)
+                    with gr.Row():
+                        research_button = gr.Button(i18n("deep_research.run_research"), variant="primary", scale=2)
+                        stop_research_button = gr.Button(i18n("deep_research.stop_research"), variant="stop", scale=1)
+                    markdown_output_display = gr.Markdown(label="Research Report")
+                    markdown_download = gr.File(label="Download Research Report")
+
+                    # Bind the stop button click event for research
+                    stop_research_button.click(
+                        fn=stop_research_agent,
+                        inputs=[],
+                        outputs=[stop_research_button, research_button],
+                    )
+
+                    # Run Deep Research
+                    research_button.click(
+                        fn=run_deep_search,
+                        inputs=[research_task_input, max_search_iteration_input, max_query_per_iter_input, llm_provider,
+                                llm_model_name, llm_num_ctx, llm_temperature, llm_base_url, llm_api_key, use_vision,
+                                use_own_browser, headless, chrome_cdp],
+                        outputs=[markdown_output_display, markdown_download, stop_research_button, research_button]
+                    )
+
+
+>>>>>>> c10902c3a2392763cff75468ca20b83331999751
 
             with gr.TabItem("🎥 Nahrávky", id=7, visible=True):
                 def list_recordings(save_recording_path):
@@ -1053,91 +1475,124 @@ def create_ui(config, theme_name="Ocean"):
                     return numbered_recordings
 
                 recordings_gallery = gr.Gallery(
+<<<<<<< HEAD
                     label="Nahrávky",
+=======
+                    label=i18n("recordings.recordings_gallery"),
+>>>>>>> c10902c3a2392763cff75468ca20b83331999751
                     value=list_recordings(config['save_recording_path']),
                     columns=3,
                     height="auto",
                     object_fit="contain"
                 )
 
+<<<<<<< HEAD
                 refresh_button = gr.Button("🔄 Obnovit nahrávky", variant="secondary")
+=======
+                refresh_button = gr.Button(i18n("recordings.refresh_recordings"), variant="secondary")
+>>>>>>> c10902c3a2392763cff75468ca20b83331999751
                 refresh_button.click(
-                    fn=list_recordings,
-                    inputs=save_recording_path,
+                    fn=lambda: list_recordings(config['save_recording_path']),
+                    inputs=[],
                     outputs=recordings_gallery
                 )
 
+<<<<<<< HEAD
             with gr.TabItem("📁 Konfigurace UI", id=8):
                 config_file_input = gr.File(
                     label="Načíst konfigurační soubor",
+=======
+            with gr.TabItem(i18n("tabs.ui_configuration"), id=8):
+                config_file_input = gr.File(
+                    label=i18n("ui_configuration.load_config_file"),
+>>>>>>> c10902c3a2392763cff75468ca20b83331999751
                     file_types=[".pkl"],
                     interactive=True
                 )
                 with gr.Row():
+<<<<<<< HEAD
                     load_config_button = gr.Button("Načíst existující konfiguraci ze souboru", variant="primary")
                     save_config_button = gr.Button("Uložit aktuální konfiguraci", variant="primary")
 
                 config_status = gr.Textbox(
                     label="Stav",
+=======
+                    load_config_button = gr.Button(i18n("ui_configuration.load_config_button"), variant="primary")
+                    save_config_button = gr.Button(i18n("ui_configuration.save_config_button"), variant="primary")
+
+                config_status = gr.Textbox(
+                    label=i18n("ui_configuration.status"),
+>>>>>>> c10902c3a2392763cff75468ca20b83331999751
                     lines=2,
                     interactive=False
                 )
 
-                load_config_button.click(
-                    fn=update_ui_from_config,
-                    inputs=[config_file_input],
-                    outputs=[
-                        agent_type, max_steps, max_actions_per_step, use_vision, tool_calling_method,
-                        llm_provider, llm_model_name, llm_num_ctx, llm_temperature, llm_base_url, llm_api_key,
-                        use_own_browser, keep_browser_open, headless, disable_security, enable_recording,
-                        window_w, window_h, save_recording_path, save_trace_path, save_agent_history_path,
-                        task, config_status
-                    ]
+
+
+                # Attach the callback to the LLM provider dropdown
+                llm_provider.change(
+                    lambda provider, api_key, base_url: update_model_dropdown(provider, api_key, base_url),
+                    inputs=[llm_provider, llm_api_key, llm_base_url],
+                    outputs=llm_model_name
                 )
 
-                save_config_button.click(
-                    fn=save_current_config,
-                    inputs=[
-                        agent_type, max_steps, max_actions_per_step, use_vision, tool_calling_method,
-                        llm_provider, llm_model_name, llm_num_ctx, llm_temperature, llm_base_url, llm_api_key,
+
+
+                # Bind the change event of llm_provider to update the visibility of context length slider
+                llm_provider.change(
+                    fn=update_llm_num_ctx_visibility,
+                    inputs=llm_provider,
+                    outputs=llm_num_ctx
+                )
+
+            # Bind the config buttons
+            load_config_button.click(
+                fn=update_ui_from_config,
+                inputs=[config_file_input],
+                outputs=[
+                    agent_type, max_steps, max_actions_per_step, use_vision, tool_calling_method,
+                    llm_provider, llm_model_name, llm_num_ctx, llm_temperature, llm_base_url, llm_api_key,
+                    use_own_browser, keep_browser_open, headless, disable_security, enable_recording,
+                    window_w, window_h, save_recording_path, save_trace_path, save_agent_history_path,
+                    task, config_status
+                ]
+        )
+
+            save_config_button.click(
+                fn=save_current_config,
+                inputs=[
+                    agent_type, max_steps, max_actions_per_step, use_vision, tool_calling_method,
+                    llm_provider, llm_model_name, llm_num_ctx, llm_temperature, llm_base_url, llm_api_key,
                         use_own_browser, keep_browser_open, headless, disable_security,
-                        enable_recording, window_w, window_h, save_recording_path, save_trace_path,
-                        save_agent_history_path, task,
-                    ],
-                    outputs=[config_status]
-                )
-
-        # Attach the callback to the LLM provider dropdown
-        llm_provider.change(
-            lambda provider, api_key, base_url: update_model_dropdown(provider, api_key, base_url),
-            inputs=[llm_provider, llm_api_key, llm_base_url],
-            outputs=llm_model_name
-        )
-
-        # Add this after defining the components
-        enable_recording.change(
-            lambda enabled: gr.update(interactive=enabled),
-            inputs=enable_recording,
-            outputs=save_recording_path
-        )
-
-        use_own_browser.change(fn=close_global_browser)
-        keep_browser_open.change(fn=close_global_browser)
+                    enable_recording, window_w, window_h, save_recording_path, save_trace_path,
+                    save_agent_history_path, task,
+                ],
+                outputs=[config_status]
+            )
 
     return demo
 
 
 def main():
+<<<<<<< HEAD
     parser = argparse.ArgumentParser(description="Gradio UI pro agenta prohlížeče")
     parser.add_argument("--ip", type=str, default="127.0.0.1", help="IP adresa, na kterou se má navázat")
     parser.add_argument("--port", type=int, default=7788, help="Port, na kterém se má naslouchat")
     parser.add_argument("--theme", type=str, default="Ocean", choices=theme_map.keys(), help="Motiv, který se má použít pro UI")
     parser.add_argument("--dark-mode", action="store_true", help="Povolit tmavý režim")
+=======
+    parser = argparse.ArgumentParser(description="Gradio UI for Browser Agent")
+    parser.add_argument("--ip", type=str, default="127.0.0.1", help="IP address to bind to")
+    parser.add_argument("--port", type=int, default=7788, help="Port to listen on")
+    parser.add_argument("--theme", type=str, default="Ocean", choices=theme_map.keys(), help="Theme to use for the UI")
+    parser.add_argument("--dark-mode", action="store_true", help="Enable dark mode")
+    parser.add_argument("--language", type=str, default="en", choices=["en", "cs"], help="Default language for the UI")
+>>>>>>> c10902c3a2392763cff75468ca20b83331999751
     args = parser.parse_args()
 
     config_dict = default_config()
 
-    demo = create_ui(config_dict, theme_name=args.theme)
+    demo = create_ui(config_dict, theme_name=args.theme, language=args.language)
     demo.launch(server_name=args.ip, server_port=args.port)
 
 
